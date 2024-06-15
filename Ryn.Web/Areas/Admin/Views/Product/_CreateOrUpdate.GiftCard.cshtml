@@ -1,0 +1,36 @@
+﻿@model ProductModel
+
+@using Ryn.Core.Domain.Catalog;
+@using Ryn.Services
+
+ <div class="card-body">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <ryn-label asp-for="IsGiftCard" />
+            </div>
+            <div class="col-md-9">
+                <ryn-editor asp-for="IsGiftCard" />
+                <span asp-validation-for="IsGiftCard"></span>
+            </div>
+        </div>
+        <ryn-nested-setting asp-for="IsGiftCard">
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <ryn-label asp-for="GiftCardTypeId" />
+                </div>
+                <div class="col-md-9">
+                    <ryn-select asp-for="GiftCardTypeId" asp-items="@await (((GiftCardType)Model.GiftCardTypeId).ToSelectListAsync())" />
+                    <span asp-validation-for="GiftCardTypeId"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                    <ryn-label asp-for="OverriddenGiftCardAmount" />
+                </div>
+                <div class="col-md-9">
+                    <ryn-editor asp-for="OverriddenGiftCardAmount" />
+                    <span asp-validation-for="OverriddenGiftCardAmount"></span>
+                </div>
+            </div>
+        </ryn-nested-setting>
+    </div>

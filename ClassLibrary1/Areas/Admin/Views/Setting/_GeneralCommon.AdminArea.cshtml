@@ -1,0 +1,14 @@
+@model GeneralCommonSettingsModel
+
+<div class="card-body">
+    <div class="form-group row">
+        <div class="col-md-3">
+            <ryn-override-store-checkbox asp-for="AdminAreaSettings.UseRichEditorInMessageTemplates_OverrideForStore" asp-input="AdminAreaSettings.UseRichEditorInMessageTemplates" asp-store-scope="@Model.ActiveStoreScopeConfiguration" />
+            <ryn-label asp-for="AdminAreaSettings.UseRichEditorInMessageTemplates" />
+        </div>
+        <div class="col-md-9">
+            <ryn-editor asp-for="AdminAreaSettings.UseRichEditorInMessageTemplates" />
+            <span asp-validation-for="AdminAreaSettings.UseRichEditorInMessageTemplates"></span>
+        </div>
+    </div>
+</div>

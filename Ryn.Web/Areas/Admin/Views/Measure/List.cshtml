@@ -1,0 +1,43 @@
+@model MeasureSearchModel
+
+@{
+    //page title
+    ViewBag.PageTitle = T("Admin.Configuration.Shipping.Measures").Text;
+    //active menu item (system name)
+    RynHtml.SetActiveMenuItemSystemName("Measures");
+    
+    const string hideDimensionsBlockAttributeName = "MeasuresPage.HideDimensionsBlock";
+    var customer = await workContext.GetCurrentCustomerAsync();
+    var hideDimensionsBlock = await genericAttributeService.GetAttributeAsync<bool>(customer, hideDimensionsBlockAttributeName);
+
+    const string hideWeightsBlockAttributeName = "MeasuresPage.HideWeightBlock";
+    var hideWeightsBlock = await genericAttributeService.GetAttributeAsync<bool>(customer, hideWeightsBlockAttributeName);
+}
+
+<div class="content-header clearfix">
+    <h1 class="float-left">
+        @T("Admin.Configuration.Shipping.Measures")
+    </h1>
+    <div class="float-right">
+        &nbsp;
+        @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.MeasureListButtons, additionalData = Model })
+    </div>
+</div>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="form-horizontal">
+            <ryn-doc-reference asp-string-resource="@T("Admin.Documentation.Reference.Measures", Docs.Measures + Utm.OnAdmin)" />
+
+            <ryn-cards id="category-cards">
+                <ryn-card asp-name="measures-dimensions" asp-icon="fas fa-cog" asp-title="@T("Admin.Configuration.Shipping.Measures.Dimensions")" asp-hide-block-attribute-name="@hideDimensionsBlockAttributeName" asp-hide="@hideDimensionsBlock" asp-advanced="false">@await Html.PartialAsync("Dimensions", Model)</ryn-card>
+                <ryn-card asp-name="measures-weights" asp-icon="fas fa-truck" asp-title="@T("Admin.Configuration.Shipping.Measures.Weights")" asp-hide-block-attribute-name="@hideWeightsBlockAttributeName" asp-hide="@hideWeightsBlock" asp-advanced="false">@await Html.PartialAsync("Weights", Model)</ryn-card>
+
+                @await Component.InvokeAsync("AdminWidget", new { widgetZone = AdminWidgetZones.MeasureListBlock, additionalData = Model })
+            </ryn-cards>
+        </div>
+    </div>
+</section>
+    <ryn-action-confirmation asp-button-id="btnMarkAsPrimaryDimension" asp-additional-confirm="Admin.Configuration.Shipping.Measures.AdditionalConfirm" />
+    <ryn-action-confirmation asp-button-id="btnMarkAsPrimaryWeight" asp-additional-confirm="Admin.Configuration.Shipping.Measures.AdditionalConfirm" />
+

@@ -1,0 +1,45 @@
+﻿@using System.Globalization
+@inject IEventPublisher eventPublisher
+@inject LocalizationSettings localizationSettings
+@using Ryn.Core.Domain.Localization
+@using Ryn.Web.Framework.UI;
+@{
+    //page title
+    string adminPageTitle = !string.IsNullOrWhiteSpace(ViewBag.PageTitle) ? ViewBag.PageTitle + " / " : "";
+    adminPageTitle += T("Admin.PageTitle").Text;
+
+    //event
+    await eventPublisher.PublishAsync(new PageRenderingEvent(RynHtml));
+}
+<!DOCTYPE html>
+<html lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName" dir="@Html.GetUIDirection(localizationSettings.IgnoreRtlPropertyForAdminArea)">
+<head>
+    <title>@adminPageTitle</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+    @RynHtml.GenerateHeadCustom()
+
+    @* CSS & Script resources *@
+    @{ await Html.RenderPartialAsync("_AdminScripts");  }
+</head>
+<body class="hold-transition skin-blue sidebar-collapse layout-fixed">
+    <div class="wrapper">
+        <div class="content-wrapper">
+            @await Html.PartialAsync("~/Areas/Admin/Views/Shared/Notifications.cshtml")
+            <div>
+                <ryn-antiforgery-token />
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            //enable tooltips
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+    @RynHtml.GenerateScripts(ResourceLocation.Footer)
+    @RynHtml.GenerateInlineScripts(ResourceLocation.Footer)    
+</body>
+</html>
